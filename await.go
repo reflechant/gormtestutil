@@ -3,8 +3,6 @@ package gormtestutil
 import (
 	"sync"
 	"time"
-
-	testingi "github.com/mitchellh/go-testing-interface"
 )
 
 const (
@@ -27,9 +25,7 @@ type ensureConfig struct {
 }
 
 // EnsureCompletion ensures that the waitgroup completes within a specified duration or else fails
-func EnsureCompletion(t testingi.T, wg *sync.WaitGroup, options ...EnsureOption) bool {
-	t.Helper()
-
+func EnsureCompletion(t T, wg *sync.WaitGroup, options ...EnsureOption) bool {
 	if wg == nil {
 		t.Error("WithExpectation is nil")
 
@@ -47,7 +43,6 @@ func EnsureCompletion(t testingi.T, wg *sync.WaitGroup, options ...EnsureOption)
 	// Run waitgroup in goroutine
 	channel := make(chan struct{})
 	go func() {
-		t.Helper()
 		defer close(channel)
 		wg.Wait()
 	}()
